@@ -26,6 +26,7 @@ void seePlayer(); // Mostra le informazioni del giocatore
 void gameField(); // Stampa il campo da gioco con nemici e giocatore
 int displayMenu(); // Mostra il menu del gioco
 void seeEnemies(); // Mostra le informazioni dei nemici
+void jumpTurn(); // Il player salta in una nuova posizione nel campo
 
 void initializePlayerPosition() {
     playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
@@ -58,13 +59,30 @@ void spawnEnemies() {
 
 }
 
+// Abilità del player nel gioco
 void seePlayer() {
     printf("\n");
     printf("Player simbolo: %c\n", PLAYER_SYMBOL);
     printf("Forza del Player: %d\n", playerStrength);
     printf("Posizione del Player: %d\n", playerPosition);
 }
-
+void jumpTurn(){
+    bool enemyFound = true; // Flag per controllare se il giocatore è stato trovato
+    playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
+    for(int i = 0; i < NUM_ENEMIES; i++){
+        if(playerPosition == enemyPositions[i]){
+           enemyFound = true; 
+           playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2;
+        }else{
+            enemyFound = false; // Imposta il flag a true se il nemico è trovato
+        }
+    }
+    if(!enemyFound){
+        playerStrength--; // Riduce la forza del giocatore di 1
+        printf("Il tuo turno è saltato!\n");
+        printf("Posizione del Player '*' è: %d\t Strength: %d\n", playerPosition, playerStrength);
+    }
+}
 // Funzione per stampare le informazioni dei nemici
 void seeEnemies() {
     printf("\n");
@@ -150,6 +168,9 @@ int main() {
                 case 2:
                     seeEnemies(); // Mostra le informazioni dei nemici
                     break;
+                case 3:
+                   jumpTurn(); // Il player salta in una nuova posizione nel campo
+                   break; 
                 default:
                     printf("Scelta non valida!\n");
         }
