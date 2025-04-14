@@ -29,7 +29,17 @@ void seeEnemies(); // Mostra le informazioni dei nemici
 void jumpTurn(); // Il player salta in una nuova posizione nel campo
 
 void initializePlayerPosition() {
-    playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
+    bool validPosition;
+    do {
+        validPosition = true;
+        playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
+        for (int i = 0; i < NUM_ENEMIES; i++) {
+            if (playerPosition == enemyPositions[i]) { // Controlla se la posizione del giocatore coincide con quella di un nemico
+                validPosition = false;
+                break;
+            }
+        }
+    } while (!validPosition);
     playerStrength = PLAYER_MIN_STRENGTH + rand() % (PLAYER_MAX_STRENGTH - PLAYER_MIN_STRENGTH + 1); // Genera una forza casuale tra 10 e 20
 }
 
@@ -114,12 +124,10 @@ void gameField(){
                 break;
             }
         }
-        if (!enemyFound) {
-            if (i == playerPosition) {
-                printf("%c", PLAYER_SYMBOL); // Stampa il simbolo del giocatore
-            } else {
+        if (!enemyFound && i != playerPosition) {
                 printf(" "); // Stampa uno spazio vuoto se non ci sono nemici o il giocatore
-            }
+        }else if (i == playerPosition) {
+            printf("%c", PLAYER_SYMBOL); // Stampa il simbolo del giocatore
         }
     }
 
