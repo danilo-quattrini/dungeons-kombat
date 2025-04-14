@@ -18,6 +18,7 @@ int enemyStrengths[NUM_ENEMIES];
 int playerStrength;
 int playerPosition;
 
+
 // Funzioni utilizzate nel gioco
 void initializePlayerPosition(); // Inizializza la posizione del giocatore
 void randomizeEnemyStrengths(); // Randomizza la forza dei nemici
@@ -26,6 +27,7 @@ void seePlayer(); // Mostra le informazioni del giocatore
 void gameField(); // Stampa il campo da gioco con nemici e giocatore
 int displayMenu(); // Mostra il menu del gioco
 void seeEnemies(); // Mostra le informazioni dei nemici
+
 
 void initializePlayerPosition() {
     playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
@@ -65,6 +67,7 @@ void seePlayer() {
     printf("Posizione del Player: %d\n", playerPosition);
 }
 
+
 // Funzione per stampare le informazioni dei nemici
 void seeEnemies() {
     printf("\n");
@@ -75,6 +78,7 @@ void seeEnemies() {
         printf("%d\n", enemyPositions[i]);
     }
 }
+
 // Funzione per stampare il campo da gioco con nemici e giocatore
 void gameField(){
 
@@ -148,7 +152,9 @@ int main() {
                     seePlayer(); // Mostra le informazioni del giocatore
                     break;
                 case 2:
+
                     seeEnemies(); // Mostra le informazioni dei nemici
+
                     break;
                 default:
                     printf("Scelta non valida!\n");

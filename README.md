@@ -40,11 +40,11 @@ Our main character is the Asterix "*" that will have a random strenght between 1
   ```
 3. Compile the game:
   ```bash
-  gcc -o dungeons_kombat main.c
+  gcc main.c -o dungeons-kombat
   ```
 4. Run the game:
   ```bash
-  ./dungeons_kombat
+  ./dungeons-kombat
   ```
 
 ## Planned Features
