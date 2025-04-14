@@ -32,7 +32,7 @@ Our main character is the Asterix "*" that will have a random strenght between 1
 ## How to Play
 1. Clone the repository:
   ```bash
-  git clone <repository-url>
+  git clone https://github.com/danilo-quattrini/dungeons-kombat.git
   ```
 2. Navigate to the project directory:
   ```bash
@@ -40,11 +40,11 @@ Our main character is the Asterix "*" that will have a random strenght between 1
   ```
 3. Compile the game:
   ```bash
-  gcc -o dungeons_kombat main.c
+  gcc main.c -o dungeons-kombat
   ```
 4. Run the game:
   ```bash
-  ./dungeons_kombat
+  ./dungeons-kombat
   ```
 
 ## Planned Features
