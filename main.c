@@ -18,6 +18,13 @@ int enemyStrengths[NUM_ENEMIES];
 int playerStrength;
 int playerPosition;
 
+// Funzioni utilizzate nel gioco
+void initializePlayerPosition(); // Inizializza la posizione del giocatore
+void randomizeEnemyStrengths(); // Randomizza la forza dei nemici
+void spawnEnemies(); // Posiziona i nemici su posizioni casuali dispari
+void seePlayer(); // Mostra le informazioni del giocatore
+void gameField(); // Stampa il campo da gioco con nemici e giocatore
+int displayMenu(); // Mostra il menu del gioco
 
 void initializePlayerPosition() {
     playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
