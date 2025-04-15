@@ -75,7 +75,12 @@ void spawnEnemies() {
 
 // Abilità del player nel gioco
 void seePlayer() {
-    printf("(%c)\tPower:%d\tPosition:%d\n", PLAYER_SYMBOL, playerStrength, playerPosition);
+    printf("\n");
+    printf("+-------+--------+----------+\n");
+    printf("| Player| Power  | Position |\n");
+    printf("+-------+--------+----------+\n");
+    printf("|   %c   |   %2d   |    %2d    |\n", PLAYER_SYMBOL, playerStrength, playerPosition);
+    printf("+-------+--------+----------+\n");
 }
 void jumpTurn(){
     bool enemyFound = true; // Flag per controllare se il giocatore è stato trovato
@@ -268,7 +273,6 @@ int displayMenu() {
     do {
         printf("\nMenu:\n");
         printf("0 - Abbandona\n");
-        printf("2 - Vedi Enemy\n");
         printf("3 - Salta\n");
         printf("4 - Riposa\n");
         printf("5 - Gioca\n");
