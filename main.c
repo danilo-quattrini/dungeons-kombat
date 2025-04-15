@@ -3,15 +3,10 @@
 #include <time.h>
 #include <stdbool.h>
 #include <unistd.h> 
-#include "player.c"
 #define FIELD_SIZE 61
-#define ENEMY_MIN_STRENGTH 5
-#define ENEMY_MAX_STRENGTH 25
-#define NUM_ENEMIES 10
+#include "enemy.c"
+#include "player.c"
 // Tutte le variabili globali
-char enemySymbols[NUM_ENEMIES] = {'$', '%', '&', '#', '@', 'Y', '?', '^', '!', 'X'};
-int enemyPositions[NUM_ENEMIES];
-int enemyStrengths[NUM_ENEMIES];
 int restoreStrenghtTimes = 3;
 // Funzioni utilizzate nel gioco
 void initializePlayerPosition(); // Inizializza la posizione del giocatore
@@ -27,7 +22,6 @@ bool checkFreeSpace(int); // Controllo se c'è spazio libero dove andrà il play
 bool playerDied(); // Controlla se il giocatore è ancora in vita o no
 
 int main() {
-    int choice;
     srand(time(0)); // Inizializza il generatore di numeri casuali
     initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
     randomizeEnemyStrengths();  // Randomizza la forza dei nemici
@@ -36,47 +30,6 @@ int main() {
     seeEnemies();
     gameField();
     return 0;
-}
-
-void initializePlayerPosition() {
-    bool validPosition;
-    do {
-        validPosition = true;
-        playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
-        for (int i = 0; i < NUM_ENEMIES; i++) {
-            if (playerPosition == enemyPositions[i]) { // Controlla se la posizione del giocatore coincide con quella di un nemico
-                validPosition = false;
-                break;
-            }
-        }
-    } while (!validPosition);
-    playerStrength = PLAYER_MIN_STRENGTH + rand() % (PLAYER_MAX_STRENGTH - PLAYER_MIN_STRENGTH + 1); // Genera una forza casuale tra 10 e 20
-}
-
-// Funzione per randomizzare la forza dei nemici
-void randomizeEnemyStrengths() {
-    for (int i = 0; i < NUM_ENEMIES; i++) {
-        enemyStrengths[i] = ENEMY_MIN_STRENGTH + rand() % (ENEMY_MAX_STRENGTH - ENEMY_MIN_STRENGTH + 1); // Genera forza casuale per ogni nemico
-    }
-}
-
-void spawnEnemies() {
-    for (int i = 0; i < NUM_ENEMIES; i++) {
-        int position;
-        bool validPosition = true;
-        do {
-            position = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
-            validPosition = true; // Resetta la validità della posizione
-            for (int j = 0; j < i; j++) {
-                if (enemyPositions[j] == position) { // Controlla se la posizione è già occupata da un altro nemico
-                    validPosition = false;
-                    break;
-                }
-            }
-        } while (!validPosition);
-        enemyPositions[i] = position; // Assegna la posizione al nemico
-    }
-
 }
 
 void jumpTurn(){
@@ -96,6 +49,7 @@ void jumpTurn(){
         printf("Posizione del Player '*' è: %d\t Strength: %d\n", playerPosition, playerStrength);
     }
 }
+
 void restoreStrenght(){
     if(restoreStrenghtTimes != 0){
         int enemyStrenghtAvarage = 0;
@@ -121,17 +75,6 @@ void restoreStrenght(){
         printf("Non puoi più recuperare la forza!!\n");
     }
     
-}
-// Funzione per stampare le informazioni dei nemici
-void seeEnemies() {
-    printf("\n");
-    printf("+-------+--------+----------+\n");
-    printf("| Enemy | Power  | Position |\n");
-    printf("+-------+--------+----------+\n");
-    for (int i = 0; i < NUM_ENEMIES; i++) {
-        printf("|   %c   |   %2d   |    %2d    |\n", enemySymbols[i], enemyStrengths[i], enemyPositions[i]);
-    }
-    printf("+-------+--------+----------+\n");
 }
 
 // Funzione per stampare il campo da gioco con nemici e giocatore
