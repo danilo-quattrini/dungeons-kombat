@@ -249,6 +249,9 @@ void startGame(){
                 }
             }    
             break;
+            default:
+                printf("Inserisci la corretta posizione");
+                break;
     }
 }
 
@@ -273,8 +276,12 @@ int displayMenu() {
         printf("4 - Riposa\n");
         printf("5 - Gioca\n");
         printf("Inserisci la tua scelta: ");
-        scanf("%d", &menuChoice);
-    } while (menuChoice<0 || menuChoice>5);
+        if (scanf("%d", &menuChoice) != 1) {
+            printf("Input non valido! Inserisci un numero tra 0 e 5.\n");
+            while (getchar() != '\n'); // Pulisce il buffer di input
+            menuChoice = -1; // Imposta un valore non valido per ripetere il ciclo
+        }
+    } while (menuChoice < 0 || menuChoice > 5);
     return menuChoice;
 }
    
@@ -311,31 +318,12 @@ int main() {
                             break;
                         default:
                             printf("Scelta non valida!\n");
+                            break;
                 }
             } else{
                 printf("Hai perso!!\n");
                 return 0;
             }
         }while(choice!=0);
-
-    do{
-        gameField(); // Stampa il campo da gioco con nemici e giocatore
-        choice=displayMenu(); // Mostra il menu del gioco
-        switch (choice){
-                case 0:
-                    printf("Hai abbandonato il gioco.\n");
-                    break;
-                case 1:
-                    seePlayer(); // Mostra le informazioni del giocatore
-                    break;
-                case 2:
-
-                    seeEnemies(); // Mostra le informazioni dei nemici
-
-                    break;
-                default:
-                    printf("Scelta non valida!\n");
-        }
-    }while(choice!=0);
     return 0;
 }
