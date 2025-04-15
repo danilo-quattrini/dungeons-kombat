@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <unistd.h> // For sleep function
 
 #define FIELD_SIZE 61
 #define PLAYER_SYMBOL '*'
@@ -188,12 +189,26 @@ void startGame(){
                 if (!checkFreeSpace(i)) {
                     if (enemyStrengths[i] > playerStrength) {
                         playerPosition--;
-                        printf("Il nemico è troppo forte per te\n");
-                    } else {
-                        printf("Hai sconfitto il nemico %c!\n", enemySymbols[i]);
-                        enemyStrengths[i] = 0; // Elimina il nemico
-                        enemyPositions[i] = -1; // Rimuove il nemico dal campo
-                        playerStrength--; // Riduce la forza del giocator
+                        printf("Il nemico è troppo forte per te!!\n");
+                    } else if(enemyStrengths[i] <= playerStrength){
+                        sleep(1); // Pause for 1 second
+                        int gameDice = rand() % 2; // Genera un numero casuale tra 0 e 1
+                        printf("%d\n", gameDice);
+                        sleep(1);
+                        if (gameDice == 0) {
+                            printf("Hai sconfitto il nemico %c!\n", enemySymbols[i]);
+                            playerStrength += enemyStrengths[i]; // Aggiungi la forza del nemico al giocatore
+                            if (playerStrength > 2 * ENEMY_MAX_STRENGTH) { // Controlla se supera 2 volte la forza massima dei nemici
+                                playerStrength = 2 * ENEMY_MAX_STRENGTH; // Limita la forza del giocatore
+                            }
+                            enemyStrengths[i] = 0; // Elimina il nemico
+                            enemyPositions[i] = -1; // Rimuove il nemico dal campo
+                            
+                        } else {
+                            printf("Il nemico %c ti ha sconfitto!\n", enemySymbols[i]);
+                            playerPosition--;
+                            playerStrength -= enemyStrengths[i];
+                        }
                     }
                     break;
                 }
@@ -207,18 +222,30 @@ void startGame(){
                     if (enemyStrengths[i] > playerStrength) {
                         playerPosition++;
                         printf("Il nemico è troppo forte per te\n");
-                    } else {
-                        printf("Hai sconfitto il nemico %c!\n", enemySymbols[i]);
-                        enemyStrengths[i] = 0; // Elimina il nemico
-                        enemyPositions[i] = -1; // Rimuove il nemico dal campo
-                        playerStrength--; // Riduce la forza del giocatore
+                    } else if(enemyStrengths[i] <= playerStrength){
+                        printf("Lancio dado: ");
+                        sleep(1);
+                        int gameDice = rand() % 2; // Genera un numero casuale tra 0 e 1
+                        printf("%d\n", gameDice);
+                        sleep(1);
+                        if (gameDice == 0) {
+                            printf("Hai sconfitto il nemico %c!\n", enemySymbols[i]);
+                            playerStrength += enemyStrengths[i]; // Aggiungi la forza del nemico al giocatore
+                            if (playerStrength > 2 * ENEMY_MAX_STRENGTH) { // Controlla se supera 2 volte la forza massima dei nemici
+                                playerStrength = 2 * ENEMY_MAX_STRENGTH; // Limita la forza del giocatore
+                            }
+                            enemyStrengths[i] = 0; // Elimina il nemico
+                            enemyPositions[i] = -1; // Rimuove il nemico dal campo
+                            
+                        } else {
+                            printf("Il nemico %c ti ha sconfitto!\n", enemySymbols[i]);
+                            playerPosition++;
+                            playerStrength -= enemyStrengths[i];
+                        }
                     }
                     break;
                 }
-            }     
-           
-            break;
-        default:
+            }    
             break;
     }
 }
