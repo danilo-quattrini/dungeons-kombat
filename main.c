@@ -76,9 +76,7 @@ void spawnEnemies() {
 // Abilità del player nel gioco
 void seePlayer() {
     printf("\n");
-    printf("Player simbolo: %c\n", PLAYER_SYMBOL);
-    printf("Forza del Player: %d\n", playerStrength);
-    printf("Posizione del Player: %d\n", playerPosition);
+    printf("%c\t%d\t%d\n", PLAYER_SYMBOL, playerStrength, playerPosition);
 }
 void jumpTurn(){
     bool enemyFound = true; // Flag per controllare se il giocatore è stato trovato
@@ -144,7 +142,8 @@ void seeEnemies() {
 void gameField(){
 
     bool enemyFound = false; // Flag per controllare se il giocatore è stato trovato
-
+    printf("Your Player:\n");
+    seePlayer();
     // Stampa la linea del campo da gioco
     printf("The Dungeon:\n");
     for(int i = 0; i < FIELD_SIZE; i++){
