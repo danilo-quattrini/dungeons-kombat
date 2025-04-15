@@ -3,11 +3,8 @@
 #include <time.h>
 #include <stdbool.h>
 #include <unistd.h> 
-
+#include "player.c"
 #define FIELD_SIZE 61
-#define PLAYER_SYMBOL '*'
-#define PLAYER_MIN_STRENGTH 10
-#define PLAYER_MAX_STRENGTH 20
 #define ENEMY_MIN_STRENGTH 5
 #define ENEMY_MAX_STRENGTH 25
 #define NUM_ENEMIES 10
@@ -15,8 +12,6 @@
 char enemySymbols[NUM_ENEMIES] = {'$', '%', '&', '#', '@', 'Y', '?', '^', '!', 'X'};
 int enemyPositions[NUM_ENEMIES];
 int enemyStrengths[NUM_ENEMIES];
-int playerStrength;
-int playerPosition;
 int restoreStrenghtTimes = 3;
 // Funzioni utilizzate nel gioco
 void initializePlayerPosition(); // Inizializza la posizione del giocatore
@@ -37,6 +32,9 @@ int main() {
     initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
     randomizeEnemyStrengths();  // Randomizza la forza dei nemici
     spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
+    seePlayer();
+    seeEnemies();
+    gameField();
     return 0;
 }
 
@@ -81,15 +79,6 @@ void spawnEnemies() {
 
 }
 
-// Abilità del player nel gioco
-void seePlayer() {
-    printf("\n");
-    printf("+-------+--------+----------+\n");
-    printf("| Player| Power  | Position |\n");
-    printf("+-------+--------+----------+\n");
-    printf("|   %c   |   %2d   |    %2d    |\n", PLAYER_SYMBOL, playerStrength, playerPosition);
-    printf("+-------+--------+----------+\n");
-}
 void jumpTurn(){
     bool enemyFound = true; // Flag per controllare se il giocatore è stato trovato
     playerPosition = 1 + rand() % (FIELD_SIZE / 2) * 2; // Genera una posizione casuale dispari tra 1 e 59
@@ -132,12 +121,6 @@ void restoreStrenght(){
         printf("Non puoi più recuperare la forza!!\n");
     }
     
-}
-// Controlla se il giocatore può ancora giocare o no
-bool playerDied(){
-    bool isDied = false;
-    if(playerStrength == 0) isDied = true;
-    return isDied;
 }
 // Funzione per stampare le informazioni dei nemici
 void seeEnemies() {
