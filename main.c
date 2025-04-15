@@ -129,12 +129,13 @@ bool playerDied(){
 // Funzione per stampare le informazioni dei nemici
 void seeEnemies() {
     printf("\n");
-    printf("Nemico\tForza\tPosizione\n");
+    printf("+-------+--------+----------+\n");
+    printf("| Enemy | Power  | Position |\n");
+    printf("+-------+--------+----------+\n");
     for (int i = 0; i < NUM_ENEMIES; i++) {
-        printf("%c\t", enemySymbols[i]);
-        printf("%d\t", enemyStrengths[i]);
-        printf("%d\n", enemyPositions[i]);
+        printf("|   %c   |   %2d   |    %2d    |\n", enemySymbols[i], enemyStrengths[i], enemyPositions[i]);
     }
+    printf("+-------+--------+----------+\n");
 }
 
 // Funzione per stampare il campo da gioco con nemici e giocatore
@@ -173,6 +174,7 @@ void gameField(){
         printf("-"); // Stampa la linea orizzontale
   
     }
+    seeEnemies();
 }
 void startGame(){
     int movementChoice;
@@ -295,9 +297,6 @@ int main() {
                 switch (choice){
                         case 0:
                             printf("Hai abbandonato il gioco.\n");
-                            break;
-                        case 2:
-                            seeEnemies(); // Mostra le informazioni dei nemici
                             break;
                         case 3:
                             jumpTurn(); // Il player salta in una nuova posizione nel campo
