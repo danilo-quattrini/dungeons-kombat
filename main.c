@@ -27,6 +27,8 @@ int displayMenu(); // Mostra il menu del gioco
 void seeEnemies(); // Mostra le informazioni dei nemici
 void jumpTurn(); // Il player salta in una nuova posizione nel campo
 void restoreStrenght(); // Il player si potrà riposare e recuperare la forza (lo può fare un massimo di 3 volte)
+void startGame(); // Fase effettiva del gioco
+bool checkFreeSpace(int); // Controllo se c'è spazio libero dove andrà il player
 void initializePlayerPosition() {
     bool validPosition;
     do {
@@ -166,6 +168,63 @@ void gameField(){
   
     }
 }
+void startGame(){
+    int movementChoice;
+    printf("Dove vuoi attaccare? 1/0 (1 = D e 0 = S)\n");
+    printf("=>");
+    scanf("%d", &movementChoice);
+    switch (movementChoice)
+    {
+        case 1:
+            playerPosition++;
+            for (int i = 0; i < NUM_ENEMIES; i++) {
+                if (!checkFreeSpace(i)) {
+                    if (enemyStrengths[i] > playerStrength) {
+                        playerPosition--;
+                        printf("Il nemico è troppo forte per te\n");
+                    } else {
+                        printf("Hai sconfitto il nemico %c!\n", enemySymbols[i]);
+                        enemyStrengths[i] = 0; // Elimina il nemico
+                        enemyPositions[i] = -1; // Rimuove il nemico dal campo
+                        playerStrength--; // Riduce la forza del giocator
+                    }
+                    break;
+                }
+            }
+           
+            break;
+        case 0:
+            playerPosition--;
+            for (int i = 0; i < NUM_ENEMIES; i++) {
+                if (!checkFreeSpace(i)) {
+                    if (enemyStrengths[i] > playerStrength) {
+                        playerPosition++;
+                        printf("Il nemico è troppo forte per te\n");
+                    } else {
+                        printf("Hai sconfitto il nemico %c!\n", enemySymbols[i]);
+                        enemyStrengths[i] = 0; // Elimina il nemico
+                        enemyPositions[i] = -1; // Rimuove il nemico dal campo
+                        playerStrength--; // Riduce la forza del giocatore
+                    }
+                    break;
+                }
+            }     
+           
+            break;
+        default:
+            break;
+    }
+}
+
+// Funzione che controlla se ci sono nemici o no
+bool checkFreeSpace(int i){
+    bool state = true;
+    if (playerPosition == enemyPositions[i]) {
+        state = false;
+        printf("La posizione è occupata %d\n", state);
+    }
+    return state;
+}
 int displayMenu() {
     int menuChoice;
     // Stampa il menu e richiede all'utente di inserire una scelta
@@ -176,7 +235,7 @@ int displayMenu() {
         printf("2 - Vedi Enemy\n");
         printf("3 - Salta\n");
         printf("4 - Riposa\n");
-        printf("5- Gioca\n");
+        printf("5 - Gioca\n");
         printf("Inserisci la tua scelta: ");
         scanf("%d", &menuChoice);
     } while (menuChoice<0 || menuChoice>5);
@@ -211,6 +270,9 @@ int main() {
                         break;
                         case 4: 
                             restoreStrenght(); // Il player può recuperare la forza degl'enemy
+                            break;
+                        case 5:
+                            startGame();
                             break;
                         default:
                             printf("Scelta non valida!\n");
