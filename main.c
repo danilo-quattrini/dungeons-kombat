@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-#include <unistd.h> // For sleep function
+#include <unistd.h> 
 
 #define FIELD_SIZE 61
 #define PLAYER_SYMBOL '*'
@@ -31,6 +31,41 @@ void restoreStrenght(); // Il player si potrà riposare e recuperare la forza (l
 void startGame(); // Fase effettiva del gioco
 bool checkFreeSpace(int); // Controllo se c'è spazio libero dove andrà il player
 bool playerDied(); // Controlla se il giocatore è ancora in vita o no
+
+int main() {
+    int choice;
+    srand(time(0)); // Inizializza il generatore di numeri casuali
+    initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
+    randomizeEnemyStrengths();  // Randomizza la forza dei nemici
+    spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
+        do{
+            if(!playerDied()){
+                gameField(); // Stampa il campo da gioco con nemici e giocatore
+                choice=displayMenu(); // Mostra il menu del gioco
+                switch (choice){
+                        case 0:
+                            printf("Hai abbandonato il gioco.\n");
+                            break;
+                        case 3:
+                            jumpTurn(); // Il player salta in una nuova posizione nel campo
+                            break;
+                        case 4: 
+                            restoreStrenght(); // Il player può recuperare la forza degl'enemy
+                            break;
+                        case 5:
+                            startGame();
+                            break;
+                        default:
+                            printf("Scelta non valida!\n");
+                            break;
+                }
+            } else{
+                printf("Hai perso!!\n");
+                return 0;
+            }
+        }while(choice!=0);
+    return 0;
+}
 
 void initializePlayerPosition() {
     bool validPosition;
@@ -286,39 +321,3 @@ int displayMenu() {
     return menuChoice;
 }
    
-
-
-int main() {
-    int choice;
-    srand(time(0)); // Inizializza il generatore di numeri casuali
-    initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
-    randomizeEnemyStrengths();  // Randomizza la forza dei nemici
-    spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
-        do{
-            if(!playerDied()){
-                gameField(); // Stampa il campo da gioco con nemici e giocatore
-                choice=displayMenu(); // Mostra il menu del gioco
-                switch (choice){
-                        case 0:
-                            printf("Hai abbandonato il gioco.\n");
-                            break;
-                        case 3:
-                            jumpTurn(); // Il player salta in una nuova posizione nel campo
-                            break;
-                        case 4: 
-                            restoreStrenght(); // Il player può recuperare la forza degl'enemy
-                            break;
-                        case 5:
-                            startGame();
-                            break;
-                        default:
-                            printf("Scelta non valida!\n");
-                            break;
-                }
-            } else{
-                printf("Hai perso!!\n");
-                return 0;
-            }
-        }while(choice!=0);
-    return 0;
-}
