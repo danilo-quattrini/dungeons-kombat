@@ -29,6 +29,7 @@ void jumpTurn(); // Il player salta in una nuova posizione nel campo
 void restoreStrenght(); // Il player si potrà riposare e recuperare la forza (lo può fare un massimo di 3 volte)
 void startGame(); // Fase effettiva del gioco
 bool checkFreeSpace(int); // Controllo se c'è spazio libero dove andrà il player
+bool playerDied(); // Controlla se il giocatore è ancora in vita o no
 void initializePlayerPosition() {
     bool validPosition;
     do {
@@ -119,6 +120,12 @@ void restoreStrenght(){
         printf("Non puoi più recuperare la forza!!\n");
     }
     
+}
+// Controlla se il giocatore può ancora giocare o no
+bool playerDied(){
+    bool isDied = false;
+    if(playerStrength == 0) isDied = true;
+    return isDied;
 }
 // Funzione per stampare le informazioni dei nemici
 void seeEnemies() {
@@ -252,7 +259,7 @@ int main() {
     spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
 
         do{
-            if(playerStrength != 0){
+            if(!playerDied()){
                 gameField(); // Stampa il campo da gioco con nemici e giocatore
                 choice=displayMenu(); // Mostra il menu del gioco
                 switch (choice){
@@ -266,8 +273,8 @@ int main() {
                             seeEnemies(); // Mostra le informazioni dei nemici
                             break;
                         case 3:
-                        jumpTurn(); // Il player salta in una nuova posizione nel campo
-                        break;
+                            jumpTurn(); // Il player salta in una nuova posizione nel campo
+                            break;
                         case 4: 
                             restoreStrenght(); // Il player può recuperare la forza degl'enemy
                             break;
