@@ -191,28 +191,35 @@ int main() {
     initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
     randomizeEnemyStrengths();  // Randomizza la forza dei nemici
     spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
-    do{
-        gameField(); // Stampa il campo da gioco con nemici e giocatore
-        choice=displayMenu(); // Mostra il menu del gioco
-        switch (choice){
-                case 0:
-                    printf("Hai abbandonato il gioco.\n");
-                    break;
-                case 1:
-                    seePlayer(); // Mostra le informazioni del giocatore
-                    break;
-                case 2:
-                    seeEnemies(); // Mostra le informazioni dei nemici
-                    break;
-                case 3:
-                   jumpTurn(); // Il player salta in una nuova posizione nel campo
-                   break;
-                case 4: 
-                    restoreStrenght(); // Il player può recuperare la forza degl'enemy
-                    break;
-                default:
-                    printf("Scelta non valida!\n");
-        }
-    }while(choice!=0);
+
+        do{
+            if(playerStrength != 0){
+                gameField(); // Stampa il campo da gioco con nemici e giocatore
+                choice=displayMenu(); // Mostra il menu del gioco
+                switch (choice){
+                        case 0:
+                            printf("Hai abbandonato il gioco.\n");
+                            break;
+                        case 1:
+                            seePlayer(); // Mostra le informazioni del giocatore
+                            break;
+                        case 2:
+                            seeEnemies(); // Mostra le informazioni dei nemici
+                            break;
+                        case 3:
+                        jumpTurn(); // Il player salta in una nuova posizione nel campo
+                        break;
+                        case 4: 
+                            restoreStrenght(); // Il player può recuperare la forza degl'enemy
+                            break;
+                        default:
+                            printf("Scelta non valida!\n");
+                }
+            } else{
+                printf("Hai perso!!\n");
+                return 0;
+            }
+        }while(choice!=0);
+
     return 0;
 }
