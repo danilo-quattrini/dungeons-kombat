@@ -24,7 +24,6 @@ void randomizeEnemyStrengths(); // Randomizza la forza dei nemici
 void spawnEnemies(); // Posiziona i nemici su posizioni casuali dispari
 void seePlayer(); // Mostra le informazioni del giocatore
 void gameField(); // Stampa il campo da gioco con nemici e giocatore
-int displayMenu(); // Mostra il menu del gioco
 void seeEnemies(); // Mostra le informazioni dei nemici
 void jumpTurn(); // Il player salta in una nuova posizione nel campo
 void restoreStrenght(); // Il player si potrà riposare e recuperare la forza (lo può fare un massimo di 3 volte)
@@ -38,32 +37,6 @@ int main() {
     initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
     randomizeEnemyStrengths();  // Randomizza la forza dei nemici
     spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
-        do{
-            if(!playerDied()){
-                gameField(); // Stampa il campo da gioco con nemici e giocatore
-                choice=displayMenu(); // Mostra il menu del gioco
-                switch (choice){
-                        case 0:
-                            printf("Hai abbandonato il gioco.\n");
-                            break;
-                        case 3:
-                            jumpTurn(); // Il player salta in una nuova posizione nel campo
-                            break;
-                        case 4: 
-                            restoreStrenght(); // Il player può recuperare la forza degl'enemy
-                            break;
-                        case 5:
-                            startGame();
-                            break;
-                        default:
-                            printf("Scelta non valida!\n");
-                            break;
-                }
-            } else{
-                printf("Hai perso!!\n");
-                return 0;
-            }
-        }while(choice!=0);
     return 0;
 }
 
@@ -302,22 +275,3 @@ bool checkFreeSpace(int i){
     }
     return state;
 }
-int displayMenu() {
-    int menuChoice;
-    // Stampa il menu e richiede all'utente di inserire una scelta
-    do {
-        printf("\nMenu:\n");
-        printf("0 - Abbandona\n");
-        printf("3 - Salta\n");
-        printf("4 - Riposa\n");
-        printf("5 - Gioca\n");
-        printf("Inserisci la tua scelta: ");
-        if (scanf("%d", &menuChoice) != 1) {
-            printf("Input non valido! Inserisci un numero tra 0 e 5.\n");
-            while (getchar() != '\n'); // Pulisce il buffer di input
-            menuChoice = -1; // Imposta un valore non valido per ripetere il ciclo
-        }
-    } while (menuChoice < 0 || menuChoice > 5);
-    return menuChoice;
-}
-   
