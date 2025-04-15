@@ -10,14 +10,13 @@
 #define ENEMY_MIN_STRENGTH 5
 #define ENEMY_MAX_STRENGTH 25
 #define NUM_ENEMIES 10
-
 // Tutte le variabili globali
 char enemySymbols[NUM_ENEMIES] = {'$', '%', '&', '#', '@', 'Y', '?', '^', '!', 'X'};
 int enemyPositions[NUM_ENEMIES];
 int enemyStrengths[NUM_ENEMIES];
 int playerStrength;
 int playerPosition;
-
+int restoreStrenghtTimes = 3;
 // Funzioni utilizzate nel gioco
 void initializePlayerPosition(); // Inizializza la posizione del giocatore
 void randomizeEnemyStrengths(); // Randomizza la forza dei nemici
@@ -27,7 +26,7 @@ void gameField(); // Stampa il campo da gioco con nemici e giocatore
 int displayMenu(); // Mostra il menu del gioco
 void seeEnemies(); // Mostra le informazioni dei nemici
 void jumpTurn(); // Il player salta in una nuova posizione nel campo
-
+void restoreStrenght(); // Il player si potrà riposare e recuperare la forza (lo può fare un massimo di 3 volte)
 void initializePlayerPosition() {
     bool validPosition;
     do {
@@ -93,6 +92,32 @@ void jumpTurn(){
         printf("Posizione del Player '*' è: %d\t Strength: %d\n", playerPosition, playerStrength);
     }
 }
+void restoreStrenght(){
+    if(restoreStrenghtTimes != 0){
+        int enemyStrenghtAvarage = 0;
+        int enemyMaxStrenght = ENEMY_MIN_STRENGTH - 1; // Initialize to a value lower than the minimum possible strength
+        int enemyMinStrenght = ENEMY_MAX_STRENGTH + 1; // Initialize to a value higher than the maximum possible strength
+        for (int i = 0; i < NUM_ENEMIES; i++)
+        {
+            if(enemyStrengths[i] > 0){
+                if(enemyMaxStrenght < enemyStrengths[i] ){
+                    enemyMaxStrenght = enemyStrengths[i];
+                }
+                if(enemyMinStrenght > enemyStrengths[i]){
+                    enemyMinStrenght = enemyStrengths[i];
+                }
+            }
+        }
+        enemyStrenghtAvarage = (enemyMaxStrenght + enemyMinStrenght) / 2;
+        playerStrength += enemyStrenghtAvarage;
+        printf("Forza attuale del giocatore: %d\n", playerStrength);
+        restoreStrenghtTimes--;
+        printf("Hai ancora %d volte/a per riposare\n", restoreStrenghtTimes);
+    }else{
+        printf("Non puoi più recuperare la forza!!\n");
+    }
+    
+}
 // Funzione per stampare le informazioni dei nemici
 void seeEnemies() {
     printf("\n");
@@ -107,6 +132,7 @@ void seeEnemies() {
 void gameField(){
 
     bool enemyFound = false; // Flag per controllare se il giocatore è stato trovato
+
     // Stampa la linea del campo da gioco
     printf("The Dungeon:\n");
     for(int i = 0; i < FIELD_SIZE; i++){
@@ -119,11 +145,13 @@ void gameField(){
         enemyFound = false; // Resetta il flag per ogni iterazione
         for (int j = 0; j < NUM_ENEMIES; j++) {
             if (i == enemyPositions[j]) {
+               
                 printf("%c", enemySymbols[j]); // Stampa il simbolo del nemico
                 enemyFound = true; // Imposta il flag a true se il nemico è trovato
                 break;
             }
         }
+        // Controllo se * si trova in posizione giusta
         if (!enemyFound && i != playerPosition) {
                 printf(" "); // Stampa uno spazio vuoto se non ci sono nemici o il giocatore
         }else if (i == playerPosition) {
@@ -178,7 +206,10 @@ int main() {
                     break;
                 case 3:
                    jumpTurn(); // Il player salta in una nuova posizione nel campo
-                   break; 
+                   break;
+                case 4: 
+                    restoreStrenght(); // Il player può recuperare la forza degl'enemy
+                    break;
                 default:
                     printf("Scelta non valida!\n");
         }
