@@ -31,6 +31,7 @@ void restoreStrenght(); // Il player si potrà riposare e recuperare la forza (l
 void startGame(); // Fase effettiva del gioco
 bool checkFreeSpace(int); // Controllo se c'è spazio libero dove andrà il player
 bool playerDied(); // Controlla se il giocatore è ancora in vita o no
+
 void initializePlayerPosition() {
     bool validPosition;
     do {
@@ -138,6 +139,7 @@ void seeEnemies() {
         printf("%d\n", enemyPositions[i]);
     }
 }
+
 // Funzione per stampare il campo da gioco con nemici e giocatore
 void gameField(){
 
@@ -284,7 +286,6 @@ int main() {
     initializePlayerPosition(); // Posiziona il giocatore in una posizione casuale
     randomizeEnemyStrengths();  // Randomizza la forza dei nemici
     spawnEnemies();// Posiziona i nemici su posizioni casuali dispari
-
         do{
             if(!playerDied()){
                 gameField(); // Stampa il campo da gioco con nemici e giocatore
@@ -317,5 +318,24 @@ int main() {
             }
         }while(choice!=0);
 
+    do{
+        gameField(); // Stampa il campo da gioco con nemici e giocatore
+        choice=displayMenu(); // Mostra il menu del gioco
+        switch (choice){
+                case 0:
+                    printf("Hai abbandonato il gioco.\n");
+                    break;
+                case 1:
+                    seePlayer(); // Mostra le informazioni del giocatore
+                    break;
+                case 2:
+
+                    seeEnemies(); // Mostra le informazioni dei nemici
+
+                    break;
+                default:
+                    printf("Scelta non valida!\n");
+        }
+    }while(choice!=0);
     return 0;
 }
